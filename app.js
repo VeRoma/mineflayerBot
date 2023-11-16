@@ -97,7 +97,7 @@ class MFBot {
             //   bot.chat(output)
             console.log(items);
         } else {
-            bot.chat("empty");
+            this.bot.chat("empty");
         }
     }
 
