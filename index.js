@@ -10,6 +10,8 @@ const bot = mineflayer.createBot({
     username: "MyBot",
 });
 
+
+
 bot.loadPlugin(pathfinder);
 
 function followPlayer() {
@@ -38,6 +40,8 @@ function followPlayer() {
         }
     });
 }
+
+bot;
 
 bot.once("spawn", followPlayer);
 // bot.once("spawn", function () {
