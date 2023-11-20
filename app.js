@@ -5,9 +5,10 @@ const mineflayer = require("mineflayer");
 
 let botArgs = {
     host: "mc.minelandy.com", // айпи майнкрафт сервера
-    port: 25565, // прописывайте, если порт не 25565
+    // port: 25565, // прописывайте, если порт не 25565
+    // username: ".OkaKira", // ник бота
     username: "KiraChallenge", // ник бота
-    auth: "microsoft", // необходимо для первого входы. для пираток нужно заменить на 'offline'
+    auth: "microsoft", // необходимо для первого входа. для пираток нужно заменить на 'offline'
     // version: false,
 };
 
@@ -120,80 +121,52 @@ class MFBot {
     }
 
     async runAndJump() {
-        this.bot.setControlState('forward', true);
-        this.bot.setControlState('sprint', true);
+        this.bot.setControlState("forward", true);
+        this.bot.setControlState("sprint", true);
         // this.bot.setControlState('jump', true);
 
         await this.bot.waitForTicks(18);
         this.bot.clearControlStates();
     }
 
-    dig(i=1) {
+    dig(i = 1) {
         let target;
-    
+
         do {
             console.log(this.bot.entity.position);
             if (this.bot.targetDigBlock) {
-                console.log(`already digging ${this.bot.targetDigBlock.name}`)
+                console.log(`already digging ${this.bot.targetDigBlock.name}`);
             } else {
-                
                 this.arrayTarget([
-                    1,      0,      1,
-                    1,      1,      1,
-                    -1,     0,      1,
-                    -1,     1,      1,
-                    0,      0,      1,
-                    0,      1,      1,
+                    -1, 0, -1,
 
-                    1,      0,      2,
-                    1,      1,      2,
-                    -1,     0,      2,
-                    -1,     1,      2,
-                    0,      0,      2,
-                    0,      1,      2,
+                    -1, 1, -1,
 
-                    1,      0,      3,
-                    1,      1,      3,
-                    -1,     0,      3,
-                    -1,     1,      3,
-                    0,      0,      3,
-                    0,      1,      3,
+                    1, 0, -1,
 
-                    1,      0,      4,
-                    1,      1,      4,
-                    -1,     0,      4,
-                    -1,     1,      4,
-                    0,      0,      4,
-                    0,      1,      4,
+                    1, 1, -1,
 
-                    1,      0,      5,
-                    1,      1,      5,
-                    -1,     0,      5,
-                    -1,     1,      5,
-                    0,      0,      5,
-                    0,      1,      5,
+                    0, 0, -1,
 
-                   
+                    0, 1, -1,
 
-                ]);  
+                    -1, 0, -2,
 
-                if (this.pathClear([
-                    0,      0,      1,
-                    0,      1,      1,
-                    
-                    0,      0,      2,
-                    0,      1,      2,
+                    -1, 1, -2,
 
-                    0,      0,      3,
-                    0,      1,      3,
+                    1, 0, -2, 1, 1, -2, 0, 0, -2, 0, 1, -2,
 
-                    0,      0,      4,
-                    0,      1,      4,
+                    -1, 0, -3, -1, 1, -3, 1, 0, -3, 1, 1, -3, 0, 0, -3, 0, 1,
+                    -3,
 
-                    0,      0,      5,
-                    0,      1,      5,
+                    -1, 0, -4, -1, 1, -4, 1, 0, -4, 1, 1, -4, 0, 0, -4, 0, 1,
+                    -4,
 
-                ])) {
+                    -1, 0, -5, -1, 1, -5, 1, 0, -5, 1, 1, -5, 0, 0, -5, 0, 1,
+                    -5,
+                ]);
+
+                if (this.pathClear([0, 0, -1])) {
                     this.runAndJump();
                 }
 
@@ -203,72 +176,76 @@ class MFBot {
                     this.bot.setControlState('forward', true);
                     await this.bot.waitForTicks(5);
                     this.bot.clearControlStates();
-                }      //   */           
+                }      //   */
             }
-            i--;    
-        } while (i>0);         
-        
-        
+            i--;
+        } while (i > 0);
     }
 
     pathClear(arrayTargetArgs) {
         console.log(`pathClear running`);
         // console.log(arrayTargetArgs);
-        let target; 
-        for (let i = 0;  i<arrayTargetArgs.length; i = i + 3) {
+        let target;
+        for (let i = 0; i < arrayTargetArgs.length; i = i + 3) {
             console.log((i + 3) / 3);
-            target = this.bot.blockAt(this.bot.entity.position.offset(arrayTargetArgs[i], arrayTargetArgs[i+1], arrayTargetArgs[i+2]));
+            target = this.bot.blockAt(
+                this.bot.entity.position.offset(
+                    arrayTargetArgs[i],
+                    arrayTargetArgs[i + 1],
+                    arrayTargetArgs[i + 2]
+                )
+            );
             //await this.digTarget(target);
             console.log(`-${target.name}-`);
             switch (target.name) {
-                case 'flowing_water', 'water', 'flowing_lava', 'lava': {
+                case ("flowing_water", "water", "flowing_lava", "lava"): {
                     this.bot.quit();
                     return 0;
                 }
-            } 
-            if (target.name != 'air') return 0;
+            }
+            if (target.name != "air") return 0;
             //await this.bot.waitForTicks(5);
-            
         }
 
         return 1;
-
     }
 
     async arrayTarget(arrayTargetArgs) {
         // console.log(arrayTargetArgs);
         let target;
-        for (let i = 0;  i<arrayTargetArgs.length; i = i + 3) {
+        for (let i = 0; i < arrayTargetArgs.length; i = i + 3) {
             // console.log((i + 3) / 3);
-            target = this.bot.blockAt(this.bot.entity.position.offset(arrayTargetArgs[i], arrayTargetArgs[i+1], arrayTargetArgs[i+2]));
+            target = this.bot.blockAt(
+                this.bot.entity.position.offset(
+                    arrayTargetArgs[i],
+                    arrayTargetArgs[i + 1],
+                    arrayTargetArgs[i + 2]
+                )
+            );
             await this.digTarget(target);
             switch (target.name) {
-                case 'flowing_water', 'water', 'flowing_lava', 'lava': {
+                case ("flowing_water", "water", "flowing_lava", "lava"): {
                     this.bot.quit();
                     return;
                 }
-            } 
+            }
             //await this.bot.waitForTicks(5);
-            
         }
-
     }
-
 
     async digTarget(target) {
         if (target && this.bot.canDigBlock(target)) {
-            console.log(`starting to dig ${target.name}`)
+            console.log(`starting to dig ${target.name}`);
             try {
-                await this.bot.dig(target)
-                console.log(`finished digging ${target.name}`)
+                await this.bot.dig(target);
+                console.log(`finished digging ${target.name}`);
             } catch (err) {
-                console.log(err.stack)
+                console.log(err.stack);
             }
         } else {
-            console.log('cannot dig')
+            console.log("cannot dig");
         }
     }
-
 }
 
 let bot = new MFBot();
