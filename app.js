@@ -103,6 +103,7 @@ class MFBot {
     sayItems(items = this.bot.inventory.items()) {
         const output = items.join(", ");
         if (output) {
+            // sdfdf
             //   bot.chat(output)
             console.log(items);
         } else {
